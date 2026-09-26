@@ -3,7 +3,8 @@
  * Provides standardized HTTP requests with automatic JWT bearer authorization
  */
 
-const API_BASE = '/api';
+const rawApiUrl = import.meta.env.VITE_API_URL || '/api';
+const API_BASE = rawApiUrl.endsWith('/') ? rawApiUrl.slice(0, -1) : rawApiUrl;
 
 async function request(endpoint, options = {}) {
   const token = localStorage.getItem('careerpulse_token');

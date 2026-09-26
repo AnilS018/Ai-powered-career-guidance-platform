@@ -3,8 +3,17 @@
  * Provides standardized HTTP requests with automatic JWT bearer authorization
  */
 
-const rawApiUrl = import.meta.env.VITE_API_URL || '/api';
-const API_BASE = rawApiUrl.endsWith('/') ? rawApiUrl.slice(0, -1) : rawApiUrl;
+const rawEnvUrl = (import.meta.env.VITE_API_URL || '').trim();
+let API_BASE = '/api';
+
+if (
+  rawEnvUrl &&
+  !rawEnvUrl.includes('<') &&
+  !rawEnvUrl.includes('>') &&
+  !rawEnvUrl.includes('your-backend-url')
+) {
+  API_BASE = rawEnvUrl.endsWith('/') ? rawEnvUrl.slice(0, -1) : rawEnvUrl;
+}
 
 async function request(endpoint, options = {}) {
   const token = localStorage.getItem('careerpulse_token');
@@ -22,7 +31,7 @@ async function request(endpoint, options = {}) {
 
   try {
     const res = await fetch(`${API_BASE}${endpoint}`, config);
-    const data = await res.json();
+    const data = await res.json().catch(() => null);
 
     if (!res.ok) {
       const errorMsg = data?.message || `Request failed with status ${res.status}`;
@@ -31,6 +40,11 @@ async function request(endpoint, options = {}) {
 
     return data;
   } catch (err) {
+    if (err.name === 'TypeError' && err.message?.includes('fetch')) {
+      throw new Error(
+        'Backend server is not reachable. Please deploy your backend on Render/Railway and set your real live VITE_API_URL.'
+      );
+    }
     console.error(`[API Error: ${endpoint}]`, err.message);
     throw err;
   }

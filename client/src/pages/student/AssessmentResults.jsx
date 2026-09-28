@@ -29,7 +29,7 @@ const AssessmentResults = () => {
     setLoading(true);
     try {
       const res = await api.getAssessmentResults();
-      if (res.success && res.hasCompleted) {
+      if (res?.success && (res?.hasCompleted !== false) && res?.result) {
         setResult(res.result);
       }
     } catch (e) {

@@ -32,7 +32,7 @@ const Login = () => {
     setLoading(true);
     try {
       const user = await login(email, password);
-      navigate(user.role === 'ADMIN' ? '/admin' : '/dashboard');
+      navigate(user?.role === 'ADMIN' ? '/admin' : '/dashboard');
     } catch (err) {
       setError(err.message || 'Invalid email or password.');
     } finally {
@@ -45,7 +45,7 @@ const Login = () => {
     setLoading(true);
     try {
       const user = await demoLogin(role);
-      navigate(user.role === 'ADMIN' ? '/admin' : '/dashboard');
+      navigate(user?.role === 'ADMIN' ? '/admin' : '/dashboard');
     } catch (err) {
       setError(err.message || 'Unable to sign in with demo credentials.');
     } finally {
@@ -70,28 +70,40 @@ const Login = () => {
         </div>
 
         {/* Demo Fast Login Shortcuts */}
-        <div className="p-3.5 rounded-2xl bg-slate-50 border border-slate-200/80 space-y-2">
-          <div className="text-[11px] font-bold uppercase tracking-wider text-slate-500 text-center">
-            One-Click Instant Demo Login
+        <div className="p-3.5 rounded-2xl bg-indigo-50/50 border border-indigo-100 space-y-2.5">
+          <div className="flex items-center justify-between">
+            <span className="text-[11px] font-bold uppercase tracking-wider text-indigo-900">
+              One-Click Instant Demo Login
+            </span>
+            <span className="text-[10px] font-semibold text-indigo-600 bg-white px-2 py-0.5 rounded-full border border-indigo-200">
+              Works 100% Offline
+            </span>
           </div>
           <div className="grid grid-cols-2 gap-2">
             <button
               type="button"
+              id="demo-student-btn"
+              disabled={loading}
               onClick={() => handleDemoSignIn('student')}
-              className="py-2 px-3 rounded-xl bg-indigo-50 hover:bg-indigo-100 border border-indigo-200 text-indigo-700 text-xs font-bold transition-all flex items-center justify-center gap-1.5 shadow-xs"
+              className="py-2.5 px-3 rounded-xl bg-white hover:bg-indigo-100/70 border border-indigo-200 text-indigo-700 text-xs font-bold transition-all flex items-center justify-center gap-1.5 shadow-xs hover:scale-[1.02] active:scale-[0.98]"
             >
               <Sparkles className="w-3.5 h-3.5 text-indigo-600" />
               <span>Demo Student</span>
             </button>
             <button
               type="button"
+              id="demo-admin-btn"
+              disabled={loading}
               onClick={() => handleDemoSignIn('admin')}
-              className="py-2 px-3 rounded-xl bg-purple-50 hover:bg-purple-100 border border-purple-200 text-purple-700 text-xs font-bold transition-all flex items-center justify-center gap-1.5 shadow-xs"
+              className="py-2.5 px-3 rounded-xl bg-white hover:bg-purple-100/70 border border-purple-200 text-purple-700 text-xs font-bold transition-all flex items-center justify-center gap-1.5 shadow-xs hover:scale-[1.02] active:scale-[0.98]"
             >
               <ShieldAlert className="w-3.5 h-3.5 text-purple-600" />
               <span>Demo Admin</span>
             </button>
           </div>
+          <p className="text-[10px] text-center text-slate-500">
+            Click above for instant access or use email: <strong className="text-indigo-600">student@careerpulse.ai</strong>
+          </p>
         </div>
 
         {/* Error Alert */}

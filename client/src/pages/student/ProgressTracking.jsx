@@ -38,10 +38,10 @@ const ProgressTracking = () => {
         api.getAssessmentResults(),
       ]);
 
-      if (learnRes.status === 'fulfilled' && learnRes.value.success) {
+      if (learnRes.status === 'fulfilled' && learnRes.value?.success) {
         setLearningData(learnRes.value);
       }
-      if (assessRes.status === 'fulfilled' && assessRes.value.success) {
+      if (assessRes.status === 'fulfilled' && assessRes.value?.success) {
         setAssessmentData(assessRes.value.result);
       }
     } catch (e) {

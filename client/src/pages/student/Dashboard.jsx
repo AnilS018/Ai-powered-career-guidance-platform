@@ -43,15 +43,15 @@ const Dashboard = () => {
         api.getLearningProgress(),
       ]);
 
-      if (profRes.status === 'fulfilled' && profRes.value.success) {
+      if (profRes.status === 'fulfilled' && profRes.value?.success) {
         setProfile(profRes.value.profile);
       }
 
-      if (assessRes.status === 'fulfilled' && assessRes.value.success) {
+      if (assessRes.status === 'fulfilled' && assessRes.value?.success) {
         setAssessmentResult(assessRes.value.result);
       }
 
-      if (learnRes.status === 'fulfilled' && learnRes.value.success) {
+      if (learnRes.status === 'fulfilled' && learnRes.value?.success) {
         setLearningProgress(learnRes.value);
       }
     } catch (err) {
